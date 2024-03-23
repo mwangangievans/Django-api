@@ -21,7 +21,7 @@ class TestModel(APITestCase):
 
     def test_raises_error_with_message_when_no_email_supplied(self):
        with self.assertRaisesMessage(ValueError,'The given email must be set'):
-          User.objects.create_user(username='username',email='',password='1234')
+          User.objects.create_superuser(username='username',email='',password='1234')
 
 
     def test_cant_create_super_user_with_no_is_staff_status(self):

@@ -1,3 +1,28 @@
 from django.shortcuts import render
+from rest_framework.generics import GenericAPIView
+from authentication.serializer import registerSerializer
+from rest_framework import response , status
+from django.contrib.auth import authenticate
 
 # Create your views here.
+
+class RegisterApiView(GenericAPIView):
+    serializer_class = registerSerializer
+    def post(self,request):
+        serializers = self.serializer_class(data=request.data)
+       
+        if serializers.is_valid():
+            serializers.save()
+            return response.Response(serializers.validated_data , status=status.HTTP_201_CREATED)
+        return response.Response(serializers.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+class loginApiView(GenericAPIView):
+    def post(self,request):
+        email = request.data.get('email',None)
+        password = request.data.get('password',None)
+
+        user = authenticate(username=email , password = password)
+
+
+        if user:
+            pass
