@@ -1,6 +1,10 @@
 from authentication import views
 from django.urls import path
+from rest_framework.routers import DefaultRouter
 
-urlpatterns= [
-    path('register',views.RegisterApiView.as_view(),name="register")
-]
+routers = DefaultRouter()
+routers.register("register", views.RegisterApiView, basename="register")
+routers.register("login", views.loginApiView, basename="login")
+
+
+urlpatterns= [] + routers.urls

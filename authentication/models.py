@@ -5,6 +5,9 @@ from helpers.models import TrackingModel
 from django.contrib.auth.models import (PermissionsMixin, UserManager ,AbstractBaseUser)
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.hashers import make_password
+import jwt
+from django.conf import settings
+from datetime import datetime, timedelta;
 
 
 
@@ -107,6 +110,7 @@ class User(AbstractBaseUser,PermissionsMixin, TrackingModel):
     REQUIRED_FIELDS = ["username"]
 
     @property
-    def token():
-        return ""
+    def token(self):
+       return  jwt.encode({
+            'username':self.username,'email':self.email,'exp': datetime.utcnow() + timedelta(hours=24)}, key= settings.JWT_SECRET_KEY,algorithm='HS256')
         
